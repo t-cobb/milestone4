@@ -1,0 +1,12 @@
+name: milestone4
+title: milestone4
+username:
+account: trevorcobb
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3783678
+bundleId: 4337927
+url: https://trevorcobb.shinyapps.io/milestone4/
+when: 1615591943.51843
+asMultiple: FALSE
+asStatic: FALSE
