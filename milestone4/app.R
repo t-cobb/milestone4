@@ -8,12 +8,15 @@
 #
 
 library(shiny)
+# ddi <- read_ipums_ddi("raw_data/meps_00001.xml")
+ddi <- read_ipums_ddi("./raw_data/meps_00001.xml") 
+data <- read_ipums_micro(ddi)
 
 # Define UI for random distribution app ----
 ui <- fluidPage(
     
     # App title ----
-    titlePanel("Milestone 3"),
+    titlePanel("Milestone 4"),
     
     # Sidebar layout with input and output definitions ----
     sidebarLayout(
@@ -50,10 +53,12 @@ ui <- fluidPage(
                                  Beau!). I successfully created an Ipums account, selected the variables and years I plan to analyze
                                  and downloaded the data. I unzipped, and created an rds version of my data set. 
                                  I have started to examine and interrogate the data. In my Data tab, you can see a summary of the data 
-                                 I'm working with at this stage. 
+                                 I'm working with at this stage. I created a sample plot of interest, but am not able to get it to display at this time
+                                 Hopefully my progress still meets the expectations of milestone5. I will continue to troubleshoot the issue until  
+                                 resolved. 
                                  
                                  Here's my repo, for reference: https://github.com/t-cobb/milestone3.git ",
-                                 plotOutput("about")),
+                                 plotOutput("plot")),
                         tabPanel("Data", " YEAR          PERNUM            DUID             PID           
  Min.   :2010   Min.   : 1.000   Min.   :  10001   Length:311371     
  1st Qu.:2012   1st Qu.: 1.000   1st Qu.:  23347   Class :character  
@@ -79,6 +84,19 @@ ui <- fluidPage(
 
 # Define server logic for random distribution app ----
 server <- function(input, output) {
+    
+# to create a new output, use this reference. label it output$(name of object, then use renderplot function
+    # with the actual code to create the plot.)
+   output$plot <- renderPlot({
+       
+       data %>% select(YEAR, NOUSLYLANG) %>%
+           group_by(YEAR) %>%
+           summarise(trend = sum(NOUSLYLANG)/n()) %>%
+           drop_na() %>%
+           ggplot(aes(x = YEAR, y = trend )) +
+           geom_line()  
+   }) 
+    
     
     # Reactive expression to generate the requested distribution ----
     # This is called whenever the inputs change. The output functions
